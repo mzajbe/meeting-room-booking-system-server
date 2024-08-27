@@ -1,5 +1,5 @@
 
-// user.interface.ts
+
 export interface TUser {
   name: string;
   email: string;
@@ -8,3 +8,5 @@ export interface TUser {
   address: string;
   role: 'user' | 'admin';
 }
+
+
