@@ -2,8 +2,6 @@
 import { User } from './user.model';
 
 const createUser = async (userData: any) => {
-  // Hash the password before saving (implement this according to your security needs)
-  // For example, using bcrypt: userData.password = await bcrypt.hash(userData.password, 10);
 
   const newUser = await User.create(userData);
   // Return only non-sensitive data

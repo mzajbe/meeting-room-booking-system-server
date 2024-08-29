@@ -1,13 +1,18 @@
 import { Router } from 'express';
 import { UserRoutes } from '../modules/user/user.route';
+import { AuthRoutes } from '../modules/auth/auth.route';
 
 const router = Router();
 
 // This array maps paths to specific route handlers
 const moduleRoutes = [
   {
-    path: '/users',
+    path: '/api/auth',
     route: UserRoutes,
+  },
+  {
+    path: '/api/auth',
+    route: AuthRoutes,
   },
 ];
 

@@ -15,7 +15,7 @@ app.use(cors());
 // })
 
 // application routes
-app.use('/api/v1', router);
+app.use('/', router);
 
 const test = (req: Request, res: Response) => {
   res.send('meeting-room-booking-system-server')
