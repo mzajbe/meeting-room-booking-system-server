@@ -4,11 +4,11 @@ import { TRoom } from "./room.interface";
 
 const roomSchema = new Schema<TRoom>(
     {
-        user: {
-          type: Schema.Types.ObjectId,
-          ref: 'User', // Reference to the User model
-          required: [true, 'User ID is required'], // Custom error message
-        },
+        // user: {
+        //   type: Schema.Types.ObjectId,
+        //   ref: 'User', // Reference to the User model
+        //   required: [true, 'User ID is required'], // Custom error message
+        // },
         name: {
           type: String,
           required: [true, 'Room name is required'], // Custom error message
@@ -26,6 +26,10 @@ const roomSchema = new Schema<TRoom>(
         },
         capacity: {
           type: Number,
+          required: [true, 'Room capacity is required'], // Custom error message
+        },
+        image: {
+          type: String,
           required: [true, 'Room capacity is required'], // Custom error message
         },
         pricePerSlot: {

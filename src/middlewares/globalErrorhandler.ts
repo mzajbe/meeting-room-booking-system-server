@@ -81,13 +81,13 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   }
 
   //ultimate return
-  // return res.status(statusCode).json({
-  //   success: false,
-  //   message,
-  //   errorSources,
-  //   err,
-  //   stack: config.bcrypt_salt_rounds === 'development' ? err?.stack : null,
-  // });
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    errorSources,
+    err,
+    stack: config.bcrypt_salt_rounds === 'development' ? err?.stack : null,
+  });
 };
 
 export default globalErrorHandler;
