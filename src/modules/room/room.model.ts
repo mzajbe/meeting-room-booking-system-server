@@ -29,12 +29,16 @@ const roomSchema = new Schema<TRoom>(
           required: [true, 'Room capacity is required'], // Custom error message
         },
         image: {
-          type: String,
-          required: [true, 'Room capacity is required'], // Custom error message
+          type: [String],
+          required: [true, 'At least one room image is required'], // Custom error message
         },
         pricePerSlot: {
           type: Number,
           required: [true, 'Price per slot is required'], // Custom error message
+        },
+        description:{
+          type:String,
+          required:[true,'Description is required'],
         },
         amenities: {
           type: [String], // Array of strings for amenities

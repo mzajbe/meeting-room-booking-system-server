@@ -30,5 +30,4 @@ export const RoomService = {
     getSingleRoomFromDB,
     getAllRoomFromDB,
     updateRoomFromDB,
-
 }

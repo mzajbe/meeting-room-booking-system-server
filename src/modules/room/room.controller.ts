@@ -29,7 +29,7 @@ const getSingleRoom = catchAsync(async (req,res)=>{
 })
 
 const getAllRoom = catchAsync (async (req,res) => {
-    console.log('test',req.user);
+    console.log('test',req.cookies);
     
     const result = await RoomService.getAllRoomFromDB();
 

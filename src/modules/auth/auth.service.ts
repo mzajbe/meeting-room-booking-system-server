@@ -1,14 +1,12 @@
-
 import { User } from "../user/user.model";
 import { TLoginUsr } from "./auth.interface";
 import AppError from "../../error/AppError";
 import httpStatus from "http-status-codes";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import config from "../../config";
+import { createToken } from "./auth.utils";
 
 const loginUser = async (payload: TLoginUsr) => {
-    
-    
   //checking if the user is exist
   const user = await User.isUserExistsByEmail(payload.email);
   if (!user) {
@@ -29,18 +27,30 @@ const loginUser = async (payload: TLoginUsr) => {
     role: user.role,
   };
 
-  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
-    expiresIn: "1d",
-  });
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string
+  );
+
+  // jwt.sign(jwtPayload, config.jwt_access_secret as string, {
+  //   expiresIn: "1d",
+  // });
 
   //refresh token
-  const refreshToken = jwt.sign(
+  const refreshToken = createToken(
     jwtPayload,
     config.jwt_refresh_secret as string,
-    {
-      expiresIn: "10d",
-    }
-  )
+    config.jwt_refresh_expires_in as string
+  );
+
+  // jwt.sign(
+  //   jwtPayload,
+  //   config.jwt_refresh_secret as string,
+  //   {
+  //     expiresIn: "10d",
+  //   }
+  // )
 
   return {
     accessToken,
@@ -56,6 +66,43 @@ const loginUser = async (payload: TLoginUsr) => {
   };
 };
 
+
+const refreshToken = async (token:string)=>{
+
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const { userEmail, iat } = decoded;
+
+  // checking if the user is exist
+  const user = await User.isUserExistsByEmail(userEmail);
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This user is not found !');
+  }
+
+  const jwtPayload = {
+    userEmail: user.email,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return {
+    accessToken,
+  };
+
+
+
+};
+
 export const AuthServices = {
   loginUser,
+  refreshToken
 };

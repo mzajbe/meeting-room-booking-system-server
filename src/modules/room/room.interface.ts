@@ -7,8 +7,9 @@ export type TRoom = {
     roomNo: string;
     floorNo: number;
     capacity: number;
-    image:string;  
-    pricePerSlot: number; 
+    image:[string];  
+    pricePerSlot: number;
+    description:string, 
     amenities: string[];
     isDeleted: boolean;
 }

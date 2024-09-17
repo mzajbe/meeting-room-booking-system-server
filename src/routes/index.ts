@@ -18,7 +18,7 @@ const moduleRoutes = [
   {
     path:'/api',
     route:RoomRoutes,
-  }
+  },
 ];
 
 // Use each route in the application

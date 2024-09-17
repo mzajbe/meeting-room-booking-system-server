@@ -4,6 +4,7 @@ import { UserServices } from './user.service';
 import { userValidationSchema } from './user.validation';
 import httpStatus from 'http-status-codes';
 import sendResponse from '../../utils/sendResponse';
+import catchAsync from '../../utils/catchAsync';
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -24,7 +25,22 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// const createAdmin = catchAsync(async (req, res) => {
+//   const {password,admin:adminData} = req.body;
+
+//   const result = await UserServices.createAdminIntoDB(password,adminData);
+
+
+//   sendResponse(res, {
+//     statusCode: httpStatus.OK,
+//     success: true,
+//     message: 'Admin is created successfully',
+//     data: result,
+//   });
+// });
+
 export const UserControllers = {
   signUp,
+  // createAdmin,
 };
 
