@@ -23,6 +23,18 @@ const createUser = async (userData: any) => {
   };
 };
 
+
+
+
+const getUsersByRole = async (role: string) => {
+  return await User.find({ role });
+};
+
+const updateUserToAdminIntoDB = async() =>{
+  
+}
+
+
 // const createAdminIntoDB = async (password:string,payload)=>{
 //   const userData: Partial<TUser>={};
 
@@ -71,5 +83,6 @@ const createUser = async (userData: any) => {
 
 export const UserServices = {
   createUser,
+  getUsersByRole,
   // createAdminIntoDB,
 };

@@ -1,10 +1,9 @@
-
-import { Request, Response, NextFunction } from 'express';
-import { UserServices } from './user.service';
-import { userValidationSchema } from './user.validation';
-import httpStatus from 'http-status-codes';
-import sendResponse from '../../utils/sendResponse';
-import catchAsync from '../../utils/catchAsync';
+import { Request, Response, NextFunction } from "express";
+import { UserServices } from "./user.service";
+import { userValidationSchema } from "./user.validation";
+import httpStatus from "http-status-codes";
+import sendResponse from "../../utils/sendResponse";
+import catchAsync from "../../utils/catchAsync";
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -17,7 +16,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'User registered successfully',
+      message: "User registered successfully",
       data: result,
     });
   } catch (err) {
@@ -25,11 +24,21 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+export const getAdmin = catchAsync(async (req, res) => {
+  const admins = await UserServices.getUsersByRole("admin");
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Admins are retrieved successfully",
+    data: admins,
+  });
+});
+
 // const createAdmin = catchAsync(async (req, res) => {
 //   const {password,admin:adminData} = req.body;
 
 //   const result = await UserServices.createAdminIntoDB(password,adminData);
-
 
 //   sendResponse(res, {
 //     statusCode: httpStatus.OK,
@@ -41,6 +50,6 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 
 export const UserControllers = {
   signUp,
+  getAdmin,
   // createAdmin,
 };
-

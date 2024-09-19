@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Route to handle user sign-up
 router.post("/signup", UserControllers.signUp);
+router.get('/admins',UserControllers.getAdmin );
 
 
 // router.post("/create-admin", UserControllers.createAdmin);
