@@ -34,18 +34,3 @@ app.use(globalErrorHandler);
 app.use(notFound);
 
 export default app;
-
-// import express from 'express';
-// import mainRouter from './routes/index'; // Adjust the import path as needed
-
-// const app = express();
-
-// // Middleware setup
-// app.use(express.json()); // or other middleware as needed
-
-// // Main router setup
-// app.use(mainRouter); // Use the router from routes/index.ts
-
-// // Error handling, etc.
-
-// export default app;
