@@ -87,6 +87,7 @@ const refreshToken = async (token:string)=>{
   const jwtPayload = {
     userEmail: user.email,
     role: user.role,
+    userId: user._id,
   };
 
   const accessToken = createToken(

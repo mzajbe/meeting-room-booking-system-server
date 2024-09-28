@@ -10,6 +10,14 @@ const createBooking = catchAsync(async (req, res) => {
   // console.log("Received booking request:", req.body);
   // Call the booking service to create a booking
 
+   // Validate that room and user are not undefined
+   if (!room || !user) {
+    return res.status(400).json({
+      success: false,
+      message: "Room and user are required for booking",
+    });
+  }
+
   const newBooking = await BookingService.createBooking(
     date,
     slots,
@@ -138,6 +146,59 @@ const updateBooking = catchAsync(async (req, res, next) => {
   });
 });
 
+
+const getBookingsByUser = catchAsync(async (req, res, next) => {
+  const { userId } = req.params;
+
+  // Find bookings that belong to the user
+  const bookings = await Booking.find({ user: userId })
+    .populate("room") // Populate room details
+    .populate("slots"); // Populate slot details
+
+  if (!bookings) {
+    return next(new AppError(httpStatus.NOT_FOUND, "No bookings found"));
+  }
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    statusCode: httpStatus.OK,
+    data: bookings,
+  });
+});
+
+
+
+
+
+const rejectBooking = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+  // const { isConfirmed } = req.body;
+
+  // Find the booking by ID
+  const booking = await Booking.findById(id)
+    .populate("room") // Populate room details
+    .populate("user") // Populate user details
+    .populate("slots"); // Populate slot details
+
+  if (!booking) {
+    return next(new AppError(httpStatus.NOT_FOUND, "Booking not found"));
+  }
+
+  // Update the booking confirmation status to "unconfirmed" if it was "confirmed"
+  booking.isConfirmed = booking.isConfirmed === "confirmed" ? "unconfirmed" : booking.isConfirmed;
+
+  // Save the updated booking
+  const updatedBooking = await booking.save();
+
+  // Send the response with updated booking details
+  res.status(httpStatus.OK).json({
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Booking rejected successfully",
+    data: updatedBooking,
+  });
+});
+
 // Controller for soft deleting the booking
 export const deleteBooking = catchAsync(
   async (req, res, next) => {
@@ -173,6 +234,8 @@ export const bookingController = {
   createBooking,
   getAllBookings,
   getUserBookings,
+  getBookingsByUser,
   updateBooking,
+  rejectBooking,
   deleteBooking
 };

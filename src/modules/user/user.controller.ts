@@ -4,6 +4,8 @@ import { userValidationSchema } from "./user.validation";
 import httpStatus from "http-status-codes";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
+import { User } from "./user.model";
+import AppError from "../../error/AppError";
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,21 +37,61 @@ export const getAdmin = catchAsync(async (req, res) => {
   });
 });
 
-// const createAdmin = catchAsync(async (req, res) => {
-//   const {password,admin:adminData} = req.body;
+const getSingleUser = catchAsync(async (req,res)=>{
+  const {id} = req.params;
+  const result = await UserServices.getSingleUserFromDB(id);
+  sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Single User retrieved successfully',
+      data: result,
+    });
+})
 
-//   const result = await UserServices.createAdminIntoDB(password,adminData);
+const getUserByEmail = catchAsync(async (req, res, next) => {
+  const { email } = req.params;
 
-//   sendResponse(res, {
-//     statusCode: httpStatus.OK,
-//     success: true,
-//     message: 'Admin is created successfully',
-//     data: result,
-//   });
-// });
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return next(new AppError(httpStatus.NOT_FOUND, "User not found"));
+  }
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User fetched successfully",
+    data: user,
+  });
+});
+
+// Promote user to admin
+const promoteToAdmin = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    return next(new AppError(httpStatus.NOT_FOUND, "User not found"));
+  }
+
+  // Promote user to admin
+  user.role = "admin";
+  await user.save();
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User promoted to admin successfully",
+    data: user,
+  });
+});
 
 export const UserControllers = {
   signUp,
   getAdmin,
+  getSingleUser,
+  getUserByEmail,
+  promoteToAdmin
   // createAdmin,
 };

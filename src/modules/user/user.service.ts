@@ -23,6 +23,11 @@ const createUser = async (userData: any) => {
   };
 };
 
+const getSingleUserFromDB = async (_id:string) => {
+  const result = await User.findById(_id);
+  return result;
+}
+
 
 
 
@@ -84,5 +89,6 @@ const updateUserToAdminIntoDB = async() =>{
 export const UserServices = {
   createUser,
   getUsersByRole,
+  getSingleUserFromDB,
   // createAdminIntoDB,
 };

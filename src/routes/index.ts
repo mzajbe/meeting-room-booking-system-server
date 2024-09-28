@@ -13,6 +13,7 @@ const moduleRoutes = [
     path: '/api/auth',
     route: UserRoutes,
   },
+  
   {
     path: '/api/auth',
     route: AuthRoutes,

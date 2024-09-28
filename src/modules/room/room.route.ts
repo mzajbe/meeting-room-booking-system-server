@@ -16,12 +16,13 @@ const router = express.Router();
 //     RoomControllers.createRoom,
 //   );
    
-router.post('/rooms',
-auth(USER_ROLE.user),
-RoomControllers.createRoom);
+router.post('/rooms',RoomControllers.createRoom);
+// auth(USER_ROLE.user)
 router.get('/rooms/:id',RoomControllers.getSingleRoom);
 router.get('/rooms',RoomControllers.getAllRoom);
 //update route
-router.patch('/rooms/:id',RoomControllers.updateRoom);
+router.put('/rooms/:id',RoomControllers.updateRoom);
+router.delete('/rooms/:id/soft-delete',RoomControllers.softDeleteRoom);
+
 
   export const RoomRoutes = router;

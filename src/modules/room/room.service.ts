@@ -24,10 +24,20 @@ const updateRoomFromDB = async (id:string,payload:Partial<TRoom>) => {
     return result;
 }
 
+const softDeleteRoomFromDB = async (id: string) => {
+    const result = await Room.findOneAndUpdate(
+      { _id: id },
+      { isDeleted: true },
+      { new: true }
+    );
+    return result;
+  };
+
 
 export const RoomService = {
     createRoomIntoDB,
     getSingleRoomFromDB,
     getAllRoomFromDB,
     updateRoomFromDB,
+    softDeleteRoomFromDB
 }
